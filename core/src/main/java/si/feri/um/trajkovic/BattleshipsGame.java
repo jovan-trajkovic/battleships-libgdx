@@ -9,11 +9,13 @@ import si.feri.um.trajkovic.screens.IntroScreen;
 public class BattleshipsGame extends Game {
     private SpriteBatch batch;
     private AssetManager assetManager;
+    private GameManager gameManager;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         assetManager = new AssetManager();
+        gameManager = new GameManager();
 
         setScreen(new IntroScreen(this));
     }
@@ -32,6 +34,10 @@ public class BattleshipsGame extends Game {
 
     public SpriteBatch getBatch() {
         return batch;
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
     }
 
     @Override

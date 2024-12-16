@@ -79,14 +79,6 @@ public class MenuScreen extends ScreenAdapter {
         menuBackgroundRegion.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         table.setBackground(new TiledDrawable(menuBackgroundRegion));
 
-        // TextButton introButton = new TextButton("Intro screen", skin);
-        // introButton.addListener(new ClickListener() {
-        //     @Override
-        //     public void clicked(InputEvent event, float x, float y) {
-        //         game.setScreen(new IntroScreen(game));
-        //     }
-        // });
-
         TextButton playButton = new TextButton("Play", skin);
         playButton.addListener(new ClickListener() {
             @Override
@@ -107,7 +99,7 @@ public class MenuScreen extends ScreenAdapter {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //game.setScreen(new SettingsScreen(game));
+                game.setScreen(new SettingsScreen(game));
             }
         });
 
@@ -123,7 +115,6 @@ public class MenuScreen extends ScreenAdapter {
         buttonTable.defaults().padLeft(30).padRight(30);
 
 
-        // buttonTable.add(introButton).padBottom(15).expandX().fillX().row();
         buttonTable.add(playButton).padBottom(15).expandX().fill().row();
         buttonTable.add(leaderboardButton).padBottom(15).fillX().row();
         buttonTable.add(settingsButton).padBottom(15).fillX().row();

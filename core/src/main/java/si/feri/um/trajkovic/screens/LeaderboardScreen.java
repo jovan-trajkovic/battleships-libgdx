@@ -17,14 +17,20 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.stream.Collectors;
+
 import si.feri.um.assets.AssetDescriptors;
 import si.feri.um.assets.RegionNames;
 import si.feri.um.trajkovic.BattleshipsGame;
 import si.feri.um.trajkovic.GameConfig;
+import si.feri.um.trajkovic.GameManager;
 
 public class LeaderboardScreen extends ScreenAdapter {
     private final BattleshipsGame game;
     private final AssetManager assetManager;
+    private GameManager gameManager;
     private FitViewport viewport;
     private Stage stage;
     private Skin skin;
@@ -33,6 +39,7 @@ public class LeaderboardScreen extends ScreenAdapter {
     public LeaderboardScreen(BattleshipsGame game) {
         this.game = game;
         assetManager = game.getAssetManager();
+        gameManager = game.getGameManager();
     }
 
     @Override
@@ -50,16 +57,31 @@ public class LeaderboardScreen extends ScreenAdapter {
     private void addLeaderboardEntries(Table table) {
         Table leaderboardTable = new Table();
 
-        Array<String[]> leaderboardData = new Array<>();
+        Map<String, Integer> leaderboardData = gameManager.getLeaderboard();
+
+        Map<String, Integer> sortedLeaderboard = leaderboardData.entrySet()
+            .stream()
+            .sorted((e1, e2) -> Integer.compare(
+                (e2.getValue()),
+                (e1.getValue())
+            ))
+            .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (oldValue, newValue) -> oldValue,
+                LinkedHashMap::new
+            ));
+
+/*        Array<String[]> leaderboardData = new Array<>();
         leaderboardData.add(new String[]{"Player1", "1500"});
         leaderboardData.add(new String[]{"Player2", "1200"});
         leaderboardData.add(new String[]{"Player3", "1000"});
         leaderboardData.add(new String[]{"Player4", "850"});
-        leaderboardData.add(new String[]{"Player5", "700"});
+        leaderboardData.add(new String[]{"Player5", "700"});*/
 
-        for (String[] entry : leaderboardData) {
-            leaderboardTable.add(new Label(entry[0], skin)).expandX().left().pad(10);
-            leaderboardTable.add(new Label(entry[1], skin)).expandX().right().pad(10).row();
+        for (Map.Entry<String, Integer> entry : sortedLeaderboard.entrySet()) {
+            leaderboardTable.add(new Label(entry.getKey(), skin)).expandX().left().pad(10);
+            leaderboardTable.add(new Label(entry.getValue().toString(), skin)).expandX().right().pad(10).row();
         }
 
         ScrollPane scrollPane = new ScrollPane(leaderboardTable, skin);
