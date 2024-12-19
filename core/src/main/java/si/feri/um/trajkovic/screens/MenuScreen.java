@@ -18,14 +18,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.Objects;
+
 import si.feri.um.assets.AssetDescriptors;
 import si.feri.um.assets.RegionNames;
 import si.feri.um.trajkovic.BattleshipsGame;
 import si.feri.um.trajkovic.GameConfig;
+import si.feri.um.trajkovic.GameManager;
 
 public class MenuScreen extends ScreenAdapter {
     private final BattleshipsGame game;
     private final AssetManager assetManager;
+    private final GameManager gameManager;
     private FitViewport viewport;
     private Stage stage;
     private TextureAtlas backgrounds;
@@ -34,6 +38,7 @@ public class MenuScreen extends ScreenAdapter {
     public MenuScreen(BattleshipsGame game) {
         this.game = game;
         assetManager = game.getAssetManager();
+        gameManager = game.getGameManager();
     }
 
     @Override
@@ -83,7 +88,13 @@ public class MenuScreen extends ScreenAdapter {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //game.setScreen(new GameScreen(game));
+                if(Objects.equals(gameManager.loadGameMode(), "Singleplayer")) {
+                    game.setScreen(new SingleplayerScreen(game));
+                }
+                if(Objects.equals(gameManager.loadGameMode(), "Multiplayer")) {
+                    game.setScreen(new MultiplayerScreen(game));
+                }
+                //System.out.println(gameManager.loadGameMode());
             }
         });
 

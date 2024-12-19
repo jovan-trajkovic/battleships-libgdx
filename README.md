@@ -25,3 +25,7 @@ The goal of the game is to eliminate the other player's ships. The players take 
 - **Multiplayer**: Network communication between devices allows exchanging shots.
 
 - **Hit Tracking System**: Keeps a record of hits and misses for both players to determine the winner.
+
+
+## PROGRESS:
+- **19.12.24.** - Made the singleplayer portion of the game: Randomly generated ship positions that the user needs to destroy within a minimal number of shots

@@ -11,19 +11,17 @@ import java.util.Map;
 
 public class GameManager {
     private static final String PREFS_NAME = "game_settings";
-    private static final String LEADERBOARD_NAME = "leaderboard";
     private static final String GRID_SIZE_KEY = "grid_size";
     private static final String MODE_KEY = "game_mode";
     private static final String LEADERBOARD_FILE = "assets/leaderboard.json";
 
     private Preferences prefs;
-    private Preferences leaderboard;
     private Map<String, Integer> leaderboardData;
 
     public GameManager() {
         prefs = Gdx.app.getPreferences(PREFS_NAME);
-        leaderboard = Gdx.app.getPreferences(LEADERBOARD_NAME);
         leaderboardData = new HashMap<>();
+        loadLeaderboardJson();
     }
 
     public void saveGridSize(int gridSize) {
@@ -45,18 +43,9 @@ public class GameManager {
     }
 
     public void saveLeaderboardEntry(String playerName, int score) {
-        leaderboard.putString(playerName, String.valueOf(score));
-        leaderboard.flush();
+        //loadLeaderboardJson();
         leaderboardData.put(playerName, score);
-    }
-
-    public Map<String, Integer> loadLeaderboard() {
-        Map<String, Integer> leaderboardEntries = new HashMap<>();
-        for (String key : leaderboard.get().keySet()) {
-            leaderboardEntries.put(key, Integer.parseInt(leaderboard.getString(key)));
-        }
-        leaderboardData = leaderboardEntries;
-        return leaderboardEntries;
+        saveLeaderboard();
     }
 
     public void saveLeaderboard() {
@@ -76,13 +65,14 @@ public class GameManager {
 
             leaderboardData = json.fromJson(LinkedHashMap.class, jsonString);
         } else {
-            leaderboardData = loadLeaderboard();
-            saveLeaderboard();
+            //leaderboardData = loadLeaderboard();
+            //saveLeaderboard();
+            System.out.println("JSON doesn't exist");
         }
     }
 
     public Map<String, Integer> getLeaderboard() {
-        loadLeaderboardJson();
+        //loadLeaderboardJson();
         return leaderboardData;
     }
 }
